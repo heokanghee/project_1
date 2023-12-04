@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<title>학사관리 시스템</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+		.logo {
+			display: flex;
+			align-items: center;
+		}
+
+		.project-title {
+			text-align: center;
+			margin-top: 10px;
+		}
+
+		.nav-menu {
+			display: flex;
+			justify-content: center;
+		}
+
+		.nav-item {
+			margin-right: 20px;
+			/* 메뉴 항목 간격 조정 */
+		}
+
+		.nav-item.active a {
+			background-color: black;
+			border-radius: 7px;
+			color: white;
+			padding: 10px 10px;
+		}
+
+		#content {
+			margin-top: 20px;
+			display: flex;
+			justify-content: center;
+		}
+
+		/* 추가 */
+		.nav-menu {
+			background-color: white;
+			border: 2px solid black;
+			/* 두꺼운 테두리 추가 */
+			border-radius: 7px;
+			/* 테두리를 둥글게 만듭니다. 원하는 정도로 조절 가능 */
+
+		}
+
+		.project-title {
+			margin-left: 20px;
+			/* 원하는 여백 값으로 조정 가능 */
+			padding: 10px;
+		}
+
+		.nav-link {
+			color: black;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container" style="width: 1000px;">
+		<div class="row">
+			<div class="col-xs-2 logo">
+				<img src="images/LOGO.png" alt="로고자리" width="50" id="logo" style="cursor: pointer;">
+			</div>
+			<div class="col-xs-10 project-title">
+				SpringJPA_Oracle기반<h1>학사관리 시스템</h1>
+			</div>
+		</div>
+
+		<div class="nav-menu">
+			<!-- ul: 순서없는목록, flex-wrap: 화면 너비에 따라 항목들을 여러 줄로 나누는 기능 -->
+			<ul class="nav nav-tabs flex-wrap">
+				<!-- li: 각각의 네바게이션 항목을 나타내는 리스트 요소 -->
+				<li class="nav-item"><a class="nav-link" href="/students">학생 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="/courses">강좌 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="/workplaces">근무처 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="/subjects">과목 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="/lecturerooms">강의실 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="/teachers">교수자 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="/enrollments">수강등록</a></li>
+				<li class="nav-item"><a class="nav-link" href="/courseinstructors">과정강사 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="/erd">물리ERD</a></li>
+				<li class="nav-item"><a class="nav-link" href="/erd2">논리ERD</a></li>
+			</ul>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<!-- 메인 이미지 또는 콘텐츠를 표시할 div -->
+				<div id="content">
+					<img src="images/mainimage.jpg" alt="메인 이미지" style="max-width: 100%; height: auto;">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		// 메뉴 클릭 시 해당 콘텐츠 로드
+		$(document).ready(function () {	// 문서가 완전히 로드되면 안에 있는 함수를 실행
+			// ul 요소의 클래스가 nav-tabs이고, 그 하위에 있는 li 요소의 하위에 있는 a 태그를 클릭했을 때 실행할 함수를 정의
+			$("ul.nav-tabs li a").click(function (event) {
+				event.preventDefault();	// 이벤트의 기본 동작을 취소
+				$("ul.nav-tabs li").removeClass("active"); // 모든 메뉴 항목에서 active 클래스 제거
+				$(this).parent().addClass("active"); // 선택한 메뉴 항목에 active 클래스 추가
+				var link = $(this).attr("href");	// a태그의 href속성값(링크 주소)을 가져와 link 변수에 저장
+				loadContent(link);
+			});
+
+			function loadContent(url) {
+				// #content라는 요소에 콘텐츠를 삽입
+				$("#content").load(url, function (response, status, xhr) {
+					// 에러 처리
+					if (status === "error") {
+					}
+				});
+			}
+		});
+
+		// 로고 클릭 시 페이지 리로드
+		// document.getElementById("logo") - id가 logo인 요소를 찾는다.
+		// addEventListener("click", function () - 선택한 요소에 클릭 이벤트 리스너를 추가
+		document.getElementById("logo").addEventListener("click", function () {
+			location.reload();	// 클릭 이벤트가 발생하면 현재 페이지를 다시 로드
+		});
+	</script>
+
+	<script>
+		function loadNewContent(url) {
+			fetch(url)	// 지정된 URL에서 데이터를 가져오기 위해 fetch 함수를 사용
+				.then(response => response.text())	 // fetch가 성공하면 응답(response)의 텍스트 데이터를 추출
+				// 텍스트 데이터를 가져오면 실행될 콜백 함수
+				// 가져온 데이터를 문서의 id가 "content"인 요소의 innerHTML로 설정하여 업데이트
+				.then(data => {
+					document.getElementById("content").innerHTML = data;
+				})
+				.catch(error => {
+					console.error('Error:', error);	// 오류 메시지를 콘솔에 출력
+				});
+		}
+	</script>
+
+
+</body>
+
+</html>

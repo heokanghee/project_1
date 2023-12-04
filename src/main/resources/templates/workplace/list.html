@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Workplace List</title>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+
+	<style>
+		.scrollable-table {
+			max-height: 400px;
+			overflow-y: auto;
+			/*수직 스크롤바*/
+			overflow-x: auto;
+			/*수평 스크롤바*/
+			border-collapse: separate;
+			border-spacing: 50px;
+		}
+
+		.scrollable-table td {
+			white-space: nowrap;
+		}
+
+		.scrollable-table th {
+			text-align: center;
+		}
+
+		.fixed-hearder {
+			position: sticky;
+			/* 헤더를 고정*/
+			top: 0;
+			/* 화면 상단에 고정*/
+			background-color: black;
+			color: white;
+		}
+
+		.fixed-header th {
+			white-space: nowrap;
+			/* 긴 텍스트가 테이블 셀 안에 줄바꿈 없이 계속 표시 */
+		}
+
+		td {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div id="listContainer">
+			<h1>Workplace List</h1>
+			<div style="display: inline;">
+				<label for="sortSelect">선택:</label>
+				<select id="sortSelect" onchange="handleSortChange(this)">
+					<option value='null'>정렬방식선택</option>
+					<option value="regno">사업자등록번호로</option>
+					<option value="cname">회사명으로</option>
+					<option value="inputOrder">입력순으로</option>
+				</select>
+			</div>
+
+			<div class="scrollable-table">
+				<table style="border-collapse: separate; border-spacing: 3px;"> <!-- 추가 -->
+					<thead class="fixed-hearder">
+						<tr>
+							<th>사업자등록번호</th>
+							<th>회사명</th>
+							<th>회사주소</th>
+							<th>전화번호</th>
+							<th>팩스번호</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr th:each="workplace : ${workplaces}">
+							<td th:text="${workplace.businessregistrationnumber}"></td>
+							<td th:text="${workplace.companyname}"></td>
+							<td th:text="${workplace.companyaddress}"></td>
+							<td th:text="${workplace.phonenumber}"></td>
+							<td th:text="${workplace.faxnumber}"></td>
+							<td>
+								<!-- 사용안함 
+							<a th:href="@{'/workplaces/' + ${workplace.businessregistrationnumber}}">Detail</a>
+							<a th:href="@{'/workplaces/edit/' + ${workplace.businessregistrationnumber}}">Edit</a> -->
+
+								<a class="btn btn-primary btn-sm" href="#"
+									th:attr="data-url=@{'/workplaces/' + ${workplace.businessregistrationnumber}}"
+									th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Detail</a>
+								<a class="btn btn-warning btn-sm" href="#"
+									th:attr="data-url=@{'/workplaces/edit/' + ${workplace.businessregistrationnumber}}"
+									th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Edit</a>
+
+								<form th:action="@{'/workplaces/delete/' + ${workplace.businessregistrationnumber}}"
+									method="post" style="display: inline;">
+									<button type="submit" class="btn btn-danger btn-sm">Delete</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<a class="btn btn-dark" href="#" th:attr="data-url=@{'\workplaces/form'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'"> Add Workplace</a>
+		</div>
+	</div>
+</body>
+
+<script>
+	// JavaScript 코드를 추가
+	document.addEventListener("DOMContentLoaded", function () {
+		var sortSelect = document.getElementById("sortSelect");
+		var selectedOption = localStorage.getItem("selectedSortOption");
+
+		if (selectedOption) {
+			sortSelect.value = selectedOption; // 저장된 정렬 옵션을 설정
+			handleSortChange(sortSelect); // 초기 정렬 수행
+		}
+
+		// 콤보박스 변경 시 선택 옵션 저장
+		sortSelect.addEventListener("change", function () {
+			var selectedValue = sortSelect.value;
+			localStorage.setItem("selectedSortOption", selectedValue);
+		});
+	});
+
+	function handleSortChange(selectElement) {
+		var selectedOption = selectElement.value;
+		var url = "/workplaces?sortBy=" + selectedOption; // Construct the URL with the selected option
+
+		// Make an AJAX request to fetch the updated student list
+		fetch(url)
+			.then(response => response.text())
+			.then(data => {
+				document.getElementById("listContainer").innerHTML = data; // Update the student list container with the response HTML
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	}
+
+</script>
+
+</html>

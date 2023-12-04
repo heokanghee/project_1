@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add Lectureroom</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Add Lectureroom</h1>
+		<form th:action="@{'/lecturerooms/create'}" method="post" th:object="${lectureroom}">
+			<label for="roomnumber">강의실번호:</label>
+			<input type="text" id="roomnumber" name="roomnumber"><br>
+
+			<label for="roomname">강의실이름:</label>
+			<input type="text" id="roomname" name="roomname"><br>
+
+			<label for="seatcount">좌석수:</label>
+			<input type="number" id="seatcount" name="seatcount"><br>
+
+			<input class="btn btn-outline-primary" type="submit" value="제출">
+			
+			<a class="btn btn-outline-secondary" href="#" th:attr="data-url=@{'/lecturerooms'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">뒤로가기</a>
+		</form>
+	</div>
+</body>
+
+</html>

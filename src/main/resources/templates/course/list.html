@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Course List</title>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+
+	<style>
+		.scrollable-table {
+			max-height: 400px;
+			overflow-y: auto;
+			/*수직 스크롤바*/
+			border-collapse: separate;
+			border-spacing: 50px;
+		}
+
+		.scrollable-table td {
+			white-space: nowrap;
+		}
+
+		.scrollable-table th {
+			text-align: center;
+		}
+
+		.fixed-hearder {
+			position: sticky;
+			/* 헤더를 고정*/
+			top: 0;
+			/* 화면 상단에 고정*/
+			background-color: black;
+			color: white;
+		}
+
+		.fixed-hearder th {
+			white-space: nowrap;
+		}
+
+		td {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Course List</h1>
+
+		<div class="scrollable-table">
+			<table style="border-collapse: separate; border-spacing: 3px;"> <!-- 추가 -->
+				<thead class="fixed-hearder">
+					<tr>
+						<th>코스코드</th>
+						<th>코스이름</th>
+						<th>수강료</th>
+						<th>교재명</th>
+						<th>시작일자</th>
+						<th>코스형태</th>
+						<th>수업일수</th>
+						<th>과목코드</th>
+						<th>수강인원</th>
+						<th>강의실</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr th:each="course : ${courses}">
+						<td th:text="${course.coursecode}"></td>
+						<td th:text="${course.coursename}"></td>
+						<td th:text="${course.tuitionfee}"></td>
+						<td th:text="${course.textbookname}"></td>
+						<td th:text="${course.startdate}"></td>
+						<td th:text="${course.coursetype}"></td>
+						<td th:text="${course.classdays}"></td>
+						<td th:text="${course.subjectcode}"></td>
+						<td th:text="${course.enrolledstudents}"></td>
+						<td th:text="${course.lectureroomnumber}"></td>
+						<td>
+
+							<a class="btn btn-primary btn-sm" href="#"
+								th:attr="data-url=@{'/courses/' + ${course.coursecode}}"
+								th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Detail</a>
+							<a class="btn btn-warning btn-sm" href="#"
+								th:attr="data-url=@{'/courses/edit/' + ${course.coursecode}}"
+								th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Edit</a>
+							<!-- <a th:href="@{'/courses/' + ${course.coursecode}}">Detail</a>-->
+							<!-- <a th:href="@{'/courses/edit/' + ${course.coursecode}}">Edit</a>-->
+
+							<form th:action="@{'/courses/delete/' + ${course.coursecode}}" method="post"
+								style="display: inline;">
+								<!--<input type="hidden" name="_method" value="DELETE" />-->
+								<button type="submit" class="btn btn-danger btn-sm">Delete</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<a class="btn btn-dark" href="#" th:attr="data-url=@{'\courses/add'}"
+			th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'"> Add Course</a>
+	</div>
+</body>
+
+</html>

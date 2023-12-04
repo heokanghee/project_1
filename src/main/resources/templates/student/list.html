@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Student List</title>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+
+	<style>
+		.scrollable-table {
+			max-height: 400px;
+			overflow-y: auto;
+			/*수직 스크롤바*/
+			overflow-x: auto;
+			/*수평 스크롤바*/
+
+		}
+
+		.scrollable-table td {
+			white-space: nowrap;
+			/* 긴 텍스트가 테이블 셀 안에 줄바꿈 없이 계속 표시 */
+		}
+
+		.fixed-hearder {
+			position: sticky;
+			/* 헤더를 고정*/
+			top: 0;
+			/* 화면 상단에 고정*/
+			background-color: black;
+			color: white;
+		}
+
+		.fixed-header th {
+			white-space: nowrap;
+			/* 긴 텍스트가 테이블 셀 안에 줄바꿈 없이 계속 표시 */
+		}
+
+
+		th {
+			text-align: center;
+		}
+
+		td {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<!-- div: division(분할), 문서 내에서 컨테츠를 그룹화하거나 스타일링하기 위해 사용되는 블록 레벨 요소, 
+특정한 의미를 나타내지 않으며, 단순히 컨텐츠를 묶어서 스타일이나 레이아웃을 적용하기 위해 사용 -->
+
+<body>
+	<!-- div 일반적으로 페이지의 중앙에 배치, 페이지의 전체 너비보다 넓어지지 않는다-->
+	<div class="container">
+
+		<!-- 특정 요소를 식별하기 위해 사용됨, id 속성이 listContainer로 설정되어 있음-->
+		<div id="listContainer"> <!-- 추가, 이거 없으면 정렬 안됨 -->
+			<h1>Student List</h1>
+
+			<!-- 추가 -->
+			<div style="display: inline;"> <!-- 인라인 스타일 적용하여 수평으로 배치 -->
+				<label for="sortSelect">선택:</label> <!-- 텍스트 레이블을 나타냄 -->
+				<!-- onchange: 드롭다운 목록의 선택이 변경될 때 호출할 JavaScript 함수를 지정 -->
+				<!-- handleSortChange(this): this는 value 값 -->
+				<select id="sortSelect" onchange="handleSortChange(this)"> <!-- 드롭다운 목록을 나타냄 -->
+					<option value='null'>정렬방식선택</option> <!-- 드롭다운 목록의 기본 선택 항목, '정렬방식선택'을 나타냄, 안내 역할 -->
+					<option value="name">이름으로</option> <!-- '이름으로'라는 옵션을 선택할 때의 값 -->
+					<option value="ssn">학번으로</option> <!-- '학번으로'라는 옵션을 선택할 때의 값 -->
+					<option value="inputOrder">입력순으로</option> <!-- '입력순으로'라는 옵션을 선택할 때의 값 -->
+					<option value="businessRegNum">근무처별</option> <!-- '근무처별'이라는 옵션을 선택할 때의 값 -->
+				</select>
+			</div>
+
+			<div class="scrollable-table">
+				<table style="border-collapse: separate; border-spacing: 3px;"> <!-- 추가 -->
+					<thead class="fixed-hearder">
+						<tr>
+							<th>학번</th>
+							<th>성명</th>
+							<th>전화번호</th>
+							<th>사업자등록번호</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr th:each="student : ${students}">
+							<td th:text="${student.ssn}"></td>
+							<td th:text="${student.fullname}"></td>
+							<td th:text="${student.phonenumber}"></td>
+							<td th:text="${student.businessregistrationnumber}"></td>
+							<td>
+								<!--<a th:href="@{'/students/' + ${student.ssn}}">Detail</a>-->
+								<!--<a th:href="@{'/students/edit/' + ${student.ssn}}">Edit</a>-->
+								<!--href="#" 기본 동작인 페이지 이동을 취소하기 위해 href 속성이 #로 설정
+						이 버튼을 클릭했을 때 페이지가 새로고침되거나 다른 페이지로 이동하지 않습니다-->
+								<!--${student.ssn} 서버에 전달된 데이터 모델의 student 객체에서 ssn 속성을 가져옴
+						data-url /students/다음에 해당 학생의 ssn 값을 포함한 url 설정-->
+								<!--return false; 기본 동작(페이지 이동)을 취소-->
+								<a class="btn btn-primary" href="#" th:attr="data-url=@{'/students/' + ${student.ssn}}"
+									th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Detail</a>
+								<a class="btn btn-warning" href="#"
+									th:attr="data-url=@{'/students/edit/' + ${student.ssn}}"
+									th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Edit</a>
+
+								<form th:action="@{'/students/delete/' + ${student.ssn}}" method="post"
+									style="display: inline;">
+									<button type="submit" class="btn btn-danger">Delete</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<a class="btn btn-dark" href="#" th:attr="data-url=@{'\students/add'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Add Student</a>
+		</div>
+	</div>
+</body>
+
+<script>
+	// JavaScript 코드를 추가
+	document.addEventListener("DOMContentLoaded", function () {
+		// id가 sortSelect인 요소를 찾아서 sortSelect 변수에 할당, 드롭다운 목록(select 요소)를 나타냄
+		var sortSelect = document.getElementById("sortSelect");
+		// selectedSortOption키로 저장된 값을 가져와서 selectedSortOption키로  변수에 할당
+		var selectedOption = localStorage.getItem("selectedSortOption");
+
+		if (selectedOption) {	// 만약 selectedSortOption에 값이 있다면 
+			sortSelect.value = selectedOption; // 저장된 정렬 옵션을 설정
+			handleSortChange(sortSelect); // 초기 정렬 수행
+		}
+
+		// 콤보박스 변경 시 선택 옵션 저장
+		sortSelect.addEventListener("change", function () {	// 드롭다운 목록의 값이 변경될 때 마다
+			var selectedValue = sortSelect.value;	// 변경된 드롭다운 목록의 값을 가져와서 selectedValue 변수에 할당
+			// 선택된 값을 selectedSortOption키로 저장, 사용자가 선택한 정렬 옵션을 유지 할 수 있다.
+			localStorage.setItem("selectedSortOption", selectedValue);
+		});
+	});
+
+	// handleSortChange(selectElement): 드롭다운 목록에서 새로운 정렬 옵션이 선택될 때 호출되는 함수
+	function handleSortChange(selectElement) {
+		var selectedOption = selectElement.value;	// 드롭다운 목록에서 선택된 값을 selectElement을 통해 읽어옴
+		var url = "/students?sortBy=" + selectedOption; // 선택된 정렬 옵션 값을 이용하여 서버로 보낼 URL을 생성
+
+		fetch(url)	// 생성된 URL을 사용하여 서버에 HTTP 요청을 보냄
+			.then(response => response.text())	// 서버에서 받은 응답(response)을 텍스트로 변환
+			// 서버에서 받은 텍스트 데이터(data)를 사용하여 페이지의 listContainer 요소의 내용을 업데이트
+			// 서버로부터 받은 HTML 데이털를 이용해 학생 목록을 업데이트하는 부분
+			// div id="listContainer"
+			.then(data => {
+				document.getElementById("listContainer").innerHTML = data;
+			})
+			// 만약 서버 요청에 실패하면 콘솔에 에러 메시지를 출력
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	}
+
+
+</script>
+
+</html>

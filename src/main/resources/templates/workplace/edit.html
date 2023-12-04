@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Edit Workplace</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+
+		input {
+			margin-left: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Edit Workplace</h1>
+		<form th:action="@{'/workplaces/update/' + ${workplace.businessregistrationnumber}}" method="post"
+			th:object="${workplace}">
+			<label for="businessregistrationnumber">사업자등록번호:</label>
+			<input type="text" id="businessregistrationnumber" name="businessregistrationnumber"
+				th:field="*{businessregistrationnumber}"><br>
+
+			<label for="companyname">회사명:</label>
+			<input type="text" id="companyname" name="companyname" th:field="*{companyname}"><br>
+
+			<label for="companyaddress">회사주소:</label>
+			<input type="text" id="companyaddress" name="companyaddress" th:field="*{companyaddress}"><br>
+
+			<label for="phonenumber">전화번호:</label>
+			<input type="text" id="phonenumber" name="phonenumber" th:field="*{phonenumber}"><br>
+
+			<label for="faxnumber">팩스번호:</label>
+			<input type="text" id="faxnumber" name="faxnumber" th:field="*{faxnumber}"><br>
+
+			<input class="btn btn-primary" type="submit" value="수정">
+			
+			<a class="btn btn-secondary" href="#" th:attr="data-url=@{'/workplaces'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">취소</a>
+		</form>
+	</div>
+
+</body>
+
+</html>

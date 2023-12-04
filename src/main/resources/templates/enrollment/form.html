@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add Enrollment</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Add Enrollment</h1>
+		<form action="#" th:action="@{/enrollments/save}" th:object="${enrollment}" method="post">
+
+			<label for="coursecode">과정코드:</label>
+			<select th:field="*{coursecode}">
+				<option value="">Select Course Code</option>
+				<th:block th:each="course : ${courses}">
+					<option th:value="${course.coursecode}" th:text="${course.coursecode + ' - ' + course.coursename}">
+					</option>
+				</th:block>
+			</select>
+			<br>
+
+			<label for="ssn">주민등록번호:</label>
+			<select th:field="*{ssn}">
+				<option value="">Select SSN</option>
+				<th:block th:each="student : ${students}">
+					<option th:value="${student.ssn}" th:text="${student.ssn + ' - ' + student.fullname}"></option>
+				</th:block>
+			</select>
+			<br>
+
+			<label for="evaluation">평가</label>
+			<input type="text" id="evaluation" name="evaluation"><br>
+
+			<label for="tuitionfee">수강료</label>
+			<input type="text" id="tuitionfee" name="tuitionfee"><br>
+
+			<label for="attendance1">출석1</label>
+			<input type="text" id="attendance1" name="attendance1"><br>
+
+			<label for="attendance2">출석2</label>
+			<input type="text" id="attendance2" name="attendance2"><br>
+
+			<label for="attendance3">출석3</label>
+			<input type="text" id="attendance3" name="attendance3"><br>
+
+			<label for="attendance4">출석4</label>
+			<input type="text" id="attendance4" name="attendance4"><br>
+
+			<label for="attendance5">출석5</label>
+			<input type="text" id="attendance5" name="attendance5"><br>
+
+
+			<input class="btn btn-outline-primary" type="submit" value="제출">
+
+			<a class="btn btn-outline-secondary" href="#" th:attr="data-url=@{'/enrollments'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">뒤로가기</a>
+
+
+		</form>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add Subject</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Add Subject</h1>
+		<form th:action="@{'/subjects/create'}" method="post" th:object="${subject}">
+			<label for="subjectcode">과목코드:</label>
+			<input type="text" id="subjectcode" name="subjectcode"><br>
+
+			<label for="subjectname">과목명:</label>
+			<input type="text" id="subjectname" name="subjectname"><br>
+
+			<label for="textbookname">교재명:</label>
+			<input type="text" id="textbookname" name="textbookname"><br>
+
+			<div style="margin-top: 20px;">
+				<input class="btn btn-outline-primary" type="submit" value="제출">
+
+				<a class="btn btn-outline-secondary" href="#" th:attr="data-url=@{'/subjects'}"
+					th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">뒤로가기</a>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>

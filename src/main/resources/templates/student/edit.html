@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Edit Student</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+		
+		input {
+			margin-left: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Edit Student</h1>
+		<form th:action="@{'/students/update/' + ${student.ssn}}" method="post" th:object="${student}">
+			<input type="hidden" th:field="*{ssn}">
+
+			<label for="fullName">이름:</label>
+			<input type="text" id="fullName" name="fullname" th:field="*{fullname}"><br>
+
+			<label for="phoneNumber">핸드폰번호:</label>
+			<input type="text" id="phoneNumber" name="phonenumber" th:field="*{phonenumber}"><br>
+
+			<label for="businessRegistrationNumber">사업자등록번호:</label>
+			<input type="text" id="businessRegistrationNumber" name="businessregistrationnumber"
+				th:field="*{businessregistrationnumber}"><br>
+
+			<input class="btn btn-primary" type="submit" value="Update">
+			
+			<a class="btn btn-secondary" href="#" th:attr="data-url=@{'/students'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Cancel</a>
+		</form>
+	</div>
+</body>
+
+</html>

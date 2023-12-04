@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Edit Enrollment</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+
+		input {
+			margin-left: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Edit Enrollment</h1>
+
+		<form th:action="@{'/enrollments/update/' + ${enrollment.coursecode} + '/' + ${enrollment.ssn}}" method="post"
+			th:object="${enrollment}">
+
+			<label for="coursecode">Course Code:</label>
+			<input type="text" id="coursecode" name="coursecode" th:field="*{coursecode}"><br>
+
+			<label for="ssn">SSN:</label>
+			<input type="text" id="ssn" name="ssn" th:field="*{ssn}"><br>
+
+			<label for="evaluation">Evaluation:</label>
+			<input type="text" id="evaluation" name="evaluation" th:field="*{evaluation}"><br>
+
+			<label for="tuitionfee">Tuitionfee:</label>
+			<input type="text" id="tuitionfee" name="tuitionfee" th:field="*{tuitionfee}"><br>
+
+			<label for="attendance1">Attendance1:</label>
+			<input type="text" id="attendance1" name="attendance1" th:field="*{attendance1}"><br>
+
+			<label for="attendance2">Attendance2:</label>
+			<input type="text" id="attendance2" name="attendance2" th:field="*{attendance2}"><br>
+
+			<label for="attendance3">Attendance3:</label>
+			<input type="text" id="attendance3" name="attendance3" th:field="*{attendance3}"><br>
+
+			<label for="attendance4">Attendance4:</label>
+			<input type="text" id="attendance4" name="attendance4" th:field="*{attendance4}"><br>
+
+			<label for="attendance5">Attendance5:</label>
+			<input type="text" id="attendance5" name="attendance5" th:field="*{attendance5}"><br>
+
+			<input class="btn btn-primary" type="submit" value="Update">
+
+			<a class="btn btn-secondary" href="#" th:attr="data-url=@{'/enrollments'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Cancel</a>
+		</form>
+
+</body>
+
+</html>

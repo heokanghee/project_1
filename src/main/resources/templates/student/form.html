@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add Student</title>
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Add Student</h1>
+		<form th:object="${student}" action="/students/create" method="post">
+			<label for="ssn">주민등록번호:</label>
+			<input type="text" id="ssn" name="ssn"><br>
+
+			<label for="fullName">이름:</label>
+			<input type="text" id="fullName" name="fullname"><br>
+
+			<label for="phoneNumber">핸드폰 번호:</label>
+			<input type="text" id="phoneNumber" name="phonenumber"><br>
+
+			<label for="businessRegistrationNumber">사업자 등록번호:</label>
+			<select th:field="*{businessregistrationnumber}" style="height: 30px;">
+				<option value="">Select Subjectcode</option>
+				<option th:each="workplace : ${workplaces}" th:value="${workplace.businessregistrationnumber}"
+					th:text="${workplace.businessregistrationnumber + ' - ' + workplace.companyname}"></option>
+			</select>
+			<br>
+
+			<div style="margin-top: 20px;">
+				<input class="btn btn-outline-primary" type="submit" value="제출">
+
+				<a class="btn btn-outline-secondary" href="#" th:attr="data-url=@{'/students'}"
+					th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">뒤로가기</a>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>

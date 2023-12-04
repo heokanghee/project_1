@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Course Instructor List</title>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+
+	<style>
+		.scrollable-table {
+			max-height: 400px;
+			overflow-y: auto;
+			/*수직 스크롤바*/
+			border-collapse: separate;
+			border-spacing: 50px;
+		}
+
+		.scrollable-table td {
+			white-space: nowrap;
+		}
+
+		.scrollable-table th {
+			text-align: center;
+		}
+
+		.fixed-hearder {
+			position: sticky;
+			/* 헤더를 고정*/
+			top: 0;
+			/* 화면 상단에 고정*/
+			background-color: black;
+			color: white;
+		}
+
+		.fixed-hearder th {
+			white-space: nowrap;
+		}
+
+		td {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div id="listContainer">
+			<h1>Course Instructor List</h1>
+
+			<div style="display: inline;">
+				<label for="sortSelect">선택:</label>
+				<select id="sortSelect" onchange="handleSortChange(this)">
+					<option value='null'>정렬방식선택</option>
+					<option value="ccode">코드번호로</option>
+					<option value="tid">강사번호로</option>
+					<option value="ldate">강의일자로</option>
+					<option value="ltime">강의시간으로</option>
+					<option value="leva">강의평가순으로</option>
+					<option value="inputOrder">입력순으로</option>
+				</select>
+			</div>
+
+			<div class="scrollable-table">
+				<table style="border-collapse: separate; border-spacing: 3px;"> <!-- 추가 -->
+					<thead class="fixed-hearder">
+						<tr>
+							<th>과정코드</th>
+							<th>강사번호</th>
+							<th>강의일자</th>
+							<th>강의시간</th>
+							<th>강의평가</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr th:each="courseInstructor : ${courseInstructors}">
+							<td th:text="${courseInstructor.coursecode}"></td>
+							<td th:text="${courseInstructor.teacherid}"></td>
+							<td th:text="${#dates.format(courseInstructor.lecturedate, 'yyyy-MM-dd')}"></td>
+							<td th:text="${courseInstructor.lecturetime}"></td>
+							<td th:text="${courseInstructor.lectureevaluation}"></td>
+							<td>
+								<!-- 사용안함
+							<a
+								th:href="@{'/courseinstructors/' + ${courseInstructor.coursecode} + '/' + ${courseInstructor.teacherid}+ '/' + ${#dates.format(courseInstructor.lecturedate, 'yyyy-MM-dd')}}">Detail</a>
+							<a
+								th:href="@{'/courseinstructors/edit/' + ${courseInstructor.coursecode}+ '/' + ${courseInstructor.teacherid}+ '/' + ${#dates.format(courseInstructor.lecturedate, 'yyyy-MM-dd')}}">Edit</a>-->
+
+								<a class="btn btn-primary" href="#"
+									th:attr="data-url=@{'/courseinstructors/' + ${courseInstructor.coursecode}+ '/' + ${courseInstructor.teacherid}+ '/' + ${#dates.format(courseInstructor.lecturedate, 'yyyy-MM-dd')}}"
+									th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Detail</a>
+
+								<a class="btn btn-warning" href="#"
+									th:attr="data-url=@{'/courseinstructors/edit/' + ${courseInstructor.coursecode}+ '/' + ${courseInstructor.teacherid}+ '/' + ${#dates.format(courseInstructor.lecturedate, 'yyyy-MM-dd')}}"
+									th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Edit</a>
+
+								<form
+									th:action="@{'/courseinstructors/delete/' + ${courseInstructor.coursecode}+ '/' + ${courseInstructor.teacherid}+ '/' + ${#dates.format(courseInstructor.lecturedate, 'yyyy-MM-dd')}}"
+									method="post" style="display: inline;">
+									<button type="submit" class="btn btn-danger">Delete</button>
+								</form>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<a class="btn btn-dark" href="#" th:attr="data-url=@{'\courseinstructors/new'}"
+			th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'"> Add Courseinstructor</a>
+	</div>
+
+</body>
+
+<script>
+	// JavaScript 코드를 추가
+	document.addEventListener("DOMContentLoaded", function () {
+		var sortSelect = document.getElementById("sortSelect");
+		var selectedOption = localStorage.getItem("selectedSortOption");
+
+		if (selectedOption) {
+			sortSelect.value = selectedOption; // 저장된 정렬 옵션을 설정
+			handleSortChange(sortSelect); // 초기 정렬 수행
+		}
+
+		// 콤보박스 변경 시 선택 옵션 저장
+		sortSelect.addEventListener("change", function () {
+			var selectedValue = sortSelect.value;
+			localStorage.setItem("selectedSortOption", selectedValue);
+		});
+	});
+
+	function handleSortChange(selectElement) {
+		var selectedOption = selectElement.value;
+		var url = "/courseinstructors?sortBy=" + selectedOption; // Construct the URL with the selected option
+
+		// Make an AJAX request to fetch the updated student list
+		fetch(url)
+			.then(response => response.text())
+			.then(data => {
+				document.getElementById("listContainer").innerHTML = data; // Update the student list container with the response HTML
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	}
+
+</script>
+
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Edit Subject</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+
+		input {
+			margin-left: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Edit Subject</h1>
+		<form th:action="@{'/subjects/update/' + ${subject.subjectcode}}" method="post" th:object="${subject}">
+			<input type="hidden" th:field="*{subjectcode}">
+
+			<label for="subjectname">Subject Name:</label>
+			<input type="text" id="subjectname" name="subjectname" th:field="*{subjectname}"><br>
+
+			<label for="textbookname">Textbook Name:</label>
+			<input type="text" id="textbookname" name="textbookname" th:field="*{textbookname}"><br>
+
+			<input class="btn btn-primary" type="submit" value="수정">
+
+			<a class="btn btn-secondary" href="#" th:attr="data-url=@{'/subjects'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Cancel</a>
+		</form>
+	</div>
+</body>
+
+</html>

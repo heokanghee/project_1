@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Course Form</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+
+		input {
+			margin-left: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Course Form</h1>
+		<form th:action="@{'/courses/update/' + ${course.coursecode}}" method="post" th:object="${course}">
+			<label for="courseCode">코스코드:</label>
+			<input type="text" id="courseCode" name="coursecode" th:field="*{coursecode}"><br>
+
+			<label for="courseName">과정명:</label>
+			<input type="text" id="courseName" name="coursename" th:field="*{coursename}"><br>
+
+			<label for="tuitionFee">수강료:</label>
+			<input type="number" id="tuitionFee" name="tuitionfee" th:field="*{tuitionfee}"><br>
+
+			<label for="textbookName">교재명:</label>
+			<input type="text" id="textbookName" name="textbookname" th:field="*{textbookname}"><br>
+
+			<label for="startDate">개설일자:</label>
+			<input type="date" id="startDate" name="startdate" th:field="*{startdate}"><br>
+
+			<label for="courseType">과정구분:</label>
+			<input type="text" id="courseType" name="coursetype" th:field="*{coursetype}"><br>
+
+			<label for="classDays">수업일수:</label>
+			<input type="number" id="classDays" name="classdays" th:field="*{classdays}"><br>
+
+			<label for="subjectCode">과목코드:</label>
+			<input type="text" id="subjectCode" name="subjectcode" th:field="*{subjectcode}"><br>
+
+			<label for="enrolledStudents">수강인원:</label>
+			<input type="number" id="enrolledStudents" name="enrolledstudents" th:field="*{enrolledstudents}"><br>
+
+			<label for="lectureRoomNumber">강의실 번호:</label>
+			<input type="text" id="lectureRoomNumber" name="lectureroomnumber" th:field="*{lectureroomnumber}"><br>
+
+			<input class="btn btn-primary" type="submit" value="수정">
+			<a class="btn btn-secondary" href="#" th:attr="data-url=@{'/courses'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">Cancel</a>
+
+		</form>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add Course</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Add Course</h1>
+		<form th:object="${course}" action="/courses/create" method="post">
+			<label for="courseCode">코스코드</label>
+			<input type="text" id="courseCode" name="coursecode"><br>
+
+			<label for="courseName">코스이름</label>
+			<input type="text" id="courseName" name="coursename"><br>
+
+			<label for="tuitionFee">수강료</label>
+			<input type="number" id="tuitionFee" name="tuitionfee"><br>
+
+			<label for="textbookName">교재명</label>
+			<input type="text" id="textbookName" name="textbookname"><br>
+
+			<label for="startDate">시작일자</label>
+			<input type="date" id="startDate" name="startdate"><br>
+
+			<label for="courseType">코스형태</label>
+			<input type="text" id="courseType" name="coursetype"><br>
+
+			<label for="classDays">수업일수</label>
+			<input type="number" id="classDays" name="classdays"><br>
+
+			<label for="subjectcode">과목코드:</label>
+			<select th:field="*{subjectcode}" style="height: 30px;">
+				<option value="">Select Subjectcode</option>
+				<!-- th:each 디렉티브를 사용 ${subjects} 목록에 대해 반복, 컨트롤러에서 템플릿으로 전달된 과목 목록 나타냄-->
+				<option th:each="subject:${subjects}" th:value="${subject.subjectcode}"
+					th:text="${subject.subjectcode+'-'+subject.subjectname}"></option>
+			</select>
+			<br>
+
+			<label for="enrolledStudents">수강인원</label>
+			<input type="number" id="enrolledStudents" name="enrolledstudents"><br>
+
+			<label for="lectureroomnumber">강의실:</label>
+			<select th:field="*{lectureroomnumber}" style="height: 30px;">
+				<option value="">Select Subjectcode</option>
+				<!-- th:each 디렉티브를 사용 ${subjects} 목록에 대해 반복, 컨트롤러에서 템플릿으로 전달된 과목 목록 나타냄-->
+				<option th:each="lectureroom:${lecturerooms}" th:value="${lectureroom.roomnumber}"
+					th:text="${lectureroom.roomnumber+'-'+lectureroom.roomname}"></option>
+			</select>
+			<br>
+
+			<div style="margin-top: 20px;">
+				<input class="btn btn-outline-primary" type="submit" value="제출">
+				<a class="btn btn-outline-secondary" href="#" th:attr="data-url=@{'/courses'}"
+					th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">뒤로가기</a>
+		</form>
+	</div>
+</body>
+
+</html>

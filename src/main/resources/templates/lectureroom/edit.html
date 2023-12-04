@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Lectureroom Form</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+
+		input {
+			margin-left: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Lectureroom Form</h1>
+		<form th:action="@{'/lecturerooms/update/' + ${lectureroom.roomnumber}}" method="post"
+			th:object="${lectureroom}">
+			<label for="roomnumber">Room Number:</label>
+			<input type="text" id="roomnumber" name="roomnumber" th:field="*{roomnumber}"><br>
+
+			<label for="roomname">Room Name:</label>
+			<input type="text" id="roomname" name="roomname" th:field="*{roomname}"><br>
+
+			<label for="seatcount">SeatCount:</label>
+			<input type="number" id="seatcount" name="seatcount" th:field="*{seatcount}"><br>
+
+			<input class="btn btn-primary" type="submit" value="수정">
+			<a class="btn btn-secondary" href="#" th:attr="data-url=@{'/lecturerooms'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">취소</a>
+		</form>
+	</div>
+
+</body>
+
+</html>

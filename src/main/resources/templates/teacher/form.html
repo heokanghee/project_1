@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add Teacher</title>
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Add Teacher</h1>
+		<form th:action="@{'/teachers/create'}" method="post">
+			<label for="teacherID">선생님ID:</label>
+			<input type="text" id="teacherID" name="teacherid" /><br>
+
+			<label for="name">이름:</label>
+			<input type="text" id="name" name="tname" /><br>
+
+			<label for="phoneNumber">핸드폰번호:</label>
+			<input type="text" id="phoneNumber" name="phonenumber" /><br>
+
+			<label for="address">주소:</label>
+			<input type="text" id="address" name="address" /><br>
+
+			<input class="btn btn-outline-primary" type="submit" value="제출" />
+
+			<a class="btn btn-outline-secondary" href="#" th:attr="data-url=@{'/teachers'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">뒤로가기</a>
+
+		</form>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add CourseInstructor</title>
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Create CourseInstructor</h1>
+		<form th:object="${courseInstructor}" th:action="@{/courseinstructors/new}" method="post">
+
+			<label for="coursecode">과정코드:</label>
+			<select th:field="*{coursecode}"> <!--사용자가 옵션을 선택할 수 있는 드롭다운 목록을 나타냄-->
+				<option value="">Select Course Code</option>
+				<div th:each="course : ${courses}"> <!--${courses} 목록의 각 요소를 'course'변수로 참조하여 반복-->
+					<!--th:value="${course.coursecode}: 각 옵션의 값은 course.coursecode 값으로 설정-->
+					<option th:value="${course.coursecode}" th:text="${course.coursecode + ' - ' + course.coursename}">
+					</option>
+				</div>
+			</select>
+			<br>
+
+			<label for="teacherid">강사번호:</label>
+			<select th:field="*{teacherid}"> <!--사용자가 옵션을 선택할 수 있는 드롭다운 목록을 나타냄-->
+				<option value="">Select Teacher ID</option>
+				<div th:each="teacher : ${teachers}"> <!--${teachers} 목록의 각 요소를 'teacher'변수로 참조하여 반복-->
+					<!--th:value="${teacher.teacherid}: 각 옵션의 값은 teacher.teacherid 값으로 설정-->
+					<option th:value="${teacher.teacherid}" th:text="${teacher.teacherid + ' - ' + teacher.tname}">
+					</option>
+				</div> <!--반복 블록을 닫는다-->
+			</select>
+			<br>
+
+			<label for="lecturedate">강의일자</label>
+			<input type="date" id="lecturedate" name="lecturedate"><br>
+
+			<label for="lecturetime">강의시간</label>
+			<input type="text" id="lecturetime" name="lecturetime"><br>
+
+			<label for="lectureevaluation">강의평가</label>
+			<input type="number" id="lectureevaluation" name="lectureevaluation"><br>
+
+			<input class="btn btn-outline-primary" type="submit" value="제출">
+
+			<a class="btn btn-outline-secondary" href="#" th:attr="data-url=@{'/courseinstructors'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">뒤로가기</a>
+			
+		</form>
+
+</body>
+
+</html>

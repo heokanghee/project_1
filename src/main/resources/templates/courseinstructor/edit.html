@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Edit CourseInstructor</title>
+
+	<style>
+		label {
+			display: inline-block;
+			width: 150px;
+			/* 원하는 레이블 너비로 설정 */
+			margin-left: 10px;
+			/* 레이블과 입력 요소 사이의 오른쪽 여백 */
+		}
+
+		input {
+			margin-left: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Edit CourseInstructor</h1>
+		<form th:object="${courseInstructor}"
+			th:action="@{'/courseinstructors/edit/' + ${courseInstructor.coursecode}+ '/' + ${courseInstructor.teacherid}}"
+			method="post">
+
+			<label for="coursecode">Course Code:</label>
+			<input type="text" id="coursecode" name="coursecode" th:field="*{coursecode}"><br>
+
+			<label for="teacherid">Teacher ID:</label>
+			<input type="text" id="teacherid" name="teacherid" th:field="*{teacherid}"><br>
+
+			<label for="lecturedate">Lecture Date:</label>
+			<input type="date" id="lecturedate" name="lecturedate" th:field="*{lecturedate}"><br>
+
+			<label for="lecturetime">Lecture Time:</label>
+			<input type="text" id="lecturetime" name="lecturetime" th:field="*{lecturetime}"><br>
+
+			<label for="lectureevaluation">Lectureevaluation:</label>
+			<input type="number" id="lectureevaluation" name="lectureevaluation" th:field="*{lectureevaluation}"><br>
+
+			<input class="btn btn-primary" type="submit" value="수정">
+			
+			<a class="btn btn-secondary" href="#" th:attr="data-url=@{'/courseinstructors'}"
+				th:onclick="'loadNewContent(this.getAttribute(\'data-url\')); return false;'">취소</a>
+		</form>
+
+</body>
+
+</html>
